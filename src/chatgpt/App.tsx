@@ -5,17 +5,17 @@ import UserProfile from './components/UserProfile';
 import ProtectedRoute from './components/ProtectedRoute';
 import { AuthProvider } from './contexts/AuthContext';
 
-const App: React.FC = () => {
+const App = () => {
   return (
     <AuthProvider>
       <Router>
         <Routes>
-          <Route path="/" element={<LoginForm />} />
+          <Route path="/" element={<LoginForm />} /> {/* Login page */}
           <Route
             path="/profile"
             element={
               <ProtectedRoute>
-                <UserProfile />
+                <UserProfile /> {/* Protected profile page */}
               </ProtectedRoute>
             }
           />

@@ -1,30 +1,30 @@
 import React, { createContext, useState, useContext, ReactNode } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-interface AuthContextType {
-  token: string | null;
-  login: (token: string) => void;
-  logout: () => void;
-}
+// Create a context for authentication with default value `undefined`
+const AuthContext = createContext(undefined);
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
-
-export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [token, setToken] = useState<string | null>(localStorage.getItem('authToken'));
+// AuthProvider component that provides authentication state to its children
+export const AuthProvider = ({ children }: { children: ReactNode }) => {
+  // Use state to hold the authentication token
+  const [token, setToken] = useState(localStorage.getItem('authToken'));
   const navigate = useNavigate();
 
+  // Function to log in and set the token
   const login = (newToken: string) => {
     setToken(newToken);
-    localStorage.setItem('authToken', newToken);
-    navigate('/profile');
+    localStorage.setItem('authToken', newToken); // Save token in localStorage
+    navigate('/profile'); // Redirect to profile page after login
   };
 
+  // Function to log out and remove the token
   const logout = () => {
     setToken(null);
-    localStorage.removeItem('authToken');
-    navigate('/');
+    localStorage.removeItem('authToken'); // Remove token from localStorage
+    navigate('/'); // Redirect to login page after logout
   };
 
+  // Provide the authentication context to children
   return (
     <AuthContext.Provider value={{ token, login, logout }}>
       {children}
@@ -32,7 +32,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   );
 };
 
-export const useAuth = (): AuthContextType => {
+// Custom hook to use the authentication context
+export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {
     throw new Error('useAuth must be used within an AuthProvider');

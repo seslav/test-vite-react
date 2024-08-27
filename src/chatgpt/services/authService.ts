@@ -1,8 +1,7 @@
 import axios from 'axios';
 
-const API_URL = 'https://your-api-url.com';
-
+// Function to log in by making a POST request to the backend API
 export const login = async (username: string, password: string): Promise<string> => {
-  const response = await axios.post<{ token: string }>(`${API_URL}/login`, { username, password });
-  return response.data.token;
+  const response = await axios.post('https://your-api-url.com/login', { username, password });
+  return response.data.token; // Return the token from the response
 };
